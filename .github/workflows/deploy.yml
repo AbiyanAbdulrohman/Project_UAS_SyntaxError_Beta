@@ -1,0 +1,32 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main  # Eksekusi hanya saat push ke branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/my-app
+            # Jika folder kosong, clone pertama kali. Jika ada, tarik data terbaru.
+            if [ -d ".git" ]; then
+              git pull origin main
+            else
+              git clone https://github.com/${{ github.repository }}.git .
+            fi
+            
+            # Tambahkan perintah build jika perlu (contoh: npm install)
+            # npm install
+            # systemctl restart nginx
