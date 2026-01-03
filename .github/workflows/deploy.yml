@@ -1,32 +1,47 @@
-name: Deploy to Server
+name: Deploy Website Statis
 
+# Trigger: Menjalankan aksi setiap kali ada push ke branch 'main'
 on:
   push:
     branches:
-      - main  # Eksekusi hanya saat push ke branch main
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
+      # 1. Mengambil source code dari repository GitHub
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Deploy via SSH
+      # 2. Melakukan proses deploy via SSH
+      - name: Deploy ke Server Debian
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
           script: |
+            # Masuk ke direktori web server
             cd /var/www/my-app
-            # Jika folder kosong, clone pertama kali. Jika ada, tarik data terbaru.
-            if [ -d ".git" ]; then
-              git pull origin main
-            else
+
+            # Cek apakah folder ini sudah merupakan repository git
+            if [ ! -d ".git" ]; then
+              echo "Folder kosong, melakukan initial clone..."
+              # Clone langsung ke folder saat ini (.)
               git clone https://github.com/${{ github.repository }}.git .
+            else
+              echo "Folder sudah ada, menarik pembaruan..."
+              # Reset jika ada perubahan manual di server agar tidak konflik saat pull
+              git fetch --all
+              git reset --hard origin/main
+              git pull origin main
             fi
+
+            # Atur izin akses agar Nginx bisa membaca file
+            sudo chown -R www-data:www-data /var/www/my-app
+            sudo chmod -R 755 /var/www/my-app
             
-            # Tambahkan perintah build jika perlu (contoh: npm install)
-            # npm install
-            # systemctl restart nginx
+            echo "Deploy selesai dengan sukses!"
