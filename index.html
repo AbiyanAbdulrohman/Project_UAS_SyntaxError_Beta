@@ -3,252 +3,97 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechIT | Neon Futuristic</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <title>Technology & IT | Solusi Digital</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <style>
-        :root {
-            --bg-dark: #050505;
-            --neon-cyan: #00f2ff;
-            --neon-purple: #bc13fe;
-            --neon-green: #00ff88;
-            --glass-bg: rgba(255, 255, 255, 0.01);
-            --glass-border: rgba(255, 255, 255, 0.05);
-            --text-silver: #c0c0c0;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-dark);
-            color: white;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- NEON BACKGROUND AMBIENCE --- */
-        .neon-sphere {
-            position: fixed; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.15;
-        }
-        .sphere-1 { width: 600px; height: 600px; background: var(--neon-cyan); top: -200px; left: -100px; }
-        .sphere-2 { width: 500px; height: 500px; background: var(--neon-purple); bottom: -100px; right: -50px; }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-
-        /* --- NAVBAR --- */
-        header {
-            position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1.5rem 0;
-        }
-        .nav-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { 
-            font-size: 1.5rem; font-weight: 800; letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-        
-        nav a {
-            color: var(--text-silver); text-decoration: none;
-            margin: 0 1.5rem; font-size: 0.9rem; letter-spacing: 1px;
-            transition: 0.3s; text-transform: uppercase;
-        }
-        nav a:hover { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
-
-        /* --- HERO --- */
-        .hero {
-            padding: 10rem 0 5rem;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 5rem; font-weight: 800; line-height: 1; letter-spacing: -2px;
-            margin-bottom: 2rem;
-        }
-        .hero h1 span {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255,255,255,0.8);
-        }
-        .hero h1 em {
-            font-style: normal;
-            background: linear-gradient(to right, var(--neon-cyan), var(--neon-green));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
-        }
-        .hero p {
-            color: var(--text-silver); font-size: 1.2rem; max-width: 700px;
-            margin: 0 auto 3rem; font-weight: 300;
-        }
-
-        /* --- NEON BUTTONS --- */
-        .btn {
-            padding: 1rem 2.5rem; border-radius: 2px; font-weight: 600;
-            cursor: pointer; transition: 0.4s; text-decoration: none;
-            display: inline-block; text-transform: uppercase; letter-spacing: 2px;
-        }
-        .btn-neon {
-            border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
-            background: rgba(0, 242, 255, 0.05);
-            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.1);
-        }
-        .btn-neon:hover {
-            background: var(--neon-cyan); color: black;
-            box-shadow: 0 0 40px var(--neon-cyan);
-        }
-
-        /* --- BENTO GRID CARDS --- */
-        .grid-layout {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
-            margin: 5rem 0;
-        }
-        .neon-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 3rem 2rem; border-radius: 4px;
-            position: relative; transition: 0.3s;
-        }
-        .neon-card::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            opacity: 0; transition: 0.3s;
-        }
-        .neon-card:hover {
-            background: rgba(255,255,255,0.03);
-            transform: translateY(-5px);
-            border-color: rgba(0, 242, 255, 0.3);
-        }
-        .neon-card:hover::before { opacity: 1; }
-        
-        .neon-card i { color: var(--neon-cyan); margin-bottom: 1.5rem; filter: drop-shadow(0 0 5px var(--neon-cyan)); }
-        .neon-card h3 { font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: 1px; }
-        .neon-card p { color: var(--text-silver); font-size: 0.9rem; }
-
-        /* --- TEAM SECTION --- */
-        .team-section { padding: 5rem 0; text-align: center; }
-        .team-scroll {
-            display: flex; gap: 2rem; overflow-x: auto; padding: 2rem 0;
-            scrollbar-width: none;
-        }
-        .member-card {
-            min-width: 250px; background: var(--glass-bg);
-            padding: 2rem; border: 1px solid var(--glass-border);
-        }
-        .member-card img {
-            width: 100px; height: 100px; border-radius: 50%;
-            filter: grayscale(1); transition: 0.5s;
-            border: 1px solid var(--neon-purple); padding: 5px;
-        }
-        .member-card:hover img { filter: grayscale(0); box-shadow: 0 0 20px var(--neon-purple); }
-
-        /* --- FOOTER --- */
-        footer {
-            padding: 5rem 0; border-top: 1px solid var(--glass-border);
-            text-align: center; font-size: 0.8rem; letter-spacing: 3px;
-            color: var(--text-silver); text-transform: uppercase;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .grid-layout { grid-template-columns: 1fr; }
-            nav { display: none; }
-        }
-    </style>
 </head>
 <body>
-    <div class="neon-sphere sphere-1"></div>
-    <div class="neon-sphere sphere-2"></div>
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
 
-    <header>
-        <div class="container nav-content">
-            <div class="logo">TECH<span>IT</span></div>
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">Tech<span>IT</span></div>
             <nav>
-                <a href="#home">Home</a>
-                <a href="#solutions">Solutions</a>
-                <a href="#team">Team</a>
-                <a href="#contact">Contact</a>
+                <a href="#home">Beranda</a>
+                <a href="#about">Tentang</a>
+                <a href="#solutions">Solusi</a>
+                <a href="#contact">Kontak</a>
             </nav>
-            <div style="width: 50px;"></div> </div>
+            <button class="btn-primary">Mulai Konsultasi</button>
+        </div>
     </header>
 
     <main class="container">
         <section class="hero" id="home">
-            <p style="letter-spacing: 5px; text-transform: uppercase; font-size: 0.7rem; margin-bottom: 1rem; color: var(--neon-cyan);">System Online // 2026</p>
-            <h1><span>FUTURE</span> IS <em>CALM</em></h1>
-            <p>Membangun peradaban digital melalui teknologi yang tenang, efisien, dan melampaui batas imajinasi konvensional.</p>
-            <a href="#contact" class="btn btn-neon">Inisialisasi Proyek</a>
-        </section>
-
-        <div class="grid-layout" id="solutions">
-            <div class="neon-card">
-                <i data-lucide="terminal"></i>
-                <h3>Core Neural</h3>
-                <p>Arsitektur backend yang dirancang untuk kecepatan transmisi data tingkat tinggi.</p>
-            </div>
-            <div class="neon-card">
-                <i data-lucide="layers"></i>
-                <h3>Holo Interface</h3>
-                <p>Desain antarmuka masa depan yang intuitif dan minim distraksi.</p>
-            </div>
-            <div class="neon-card">
-                <i data-lucide="shield-check"></i>
-                <h3>Void Shield</h3>
-                <p>Protokol keamanan siber tingkat enkripsi kuantum untuk aset Anda.</p>
-            </div>
-        </div>
-
-        <section class="team-section" id="team">
-            <h2 style="letter-spacing: 10px; margin-bottom: 3rem; font-weight: 300;">EXECUTIVES</h2>
-            <div class="team-scroll">
-                <div class="member-card">
-                    <img src="images/cinta.jpeg" alt="Cinta">
-                    <h4 style="margin-top: 1rem;">Cinta Melati</h4>
-                    <p style="color: var(--neon-purple); font-size: 0.7rem;">CEO // VISIONARY</p>
+            <div class="hero-text">
+                <span class="badge">🚀 Platform Digital Generasi Baru</span>
+                <h1>Merintis <span>Masa Depan</span> Solusi Digital</h1>
+                <p>Kami merancang infrastruktur digital yang aman, skalabel, dan cerdas untuk mendukung akselerasi bisnis Anda di era Web3.</p>
+                <div class="hero-btn">
+                    <button class="btn-primary">Layanan Kami</button>
+                    <button class="btn-outline">Hubungi Kami</button>
                 </div>
-                <div class="member-card">
-                    <img src="images/alifa.jpeg" alt="Alifa">
-                    <h4 style="margin-top: 1rem;">Alifa Fazila</h4>
-                    <p style="color: var(--neon-purple); font-size: 0.7rem;">CTO // ARCHITECT</p>
-                </div>
-                <div class="member-card">
-                    <img src="images/yuda.jpeg" alt="Yuda">
-                    <h4 style="margin-top: 1rem;">Yuda Albi</h4>
-                    <p style="color: var(--neon-purple); font-size: 0.7rem;">COO // OPERATIONS</p>
-                </div>
-                <div class="member-card">
-                    <img src="images/FotoAbiyan.jpg" alt="Abiyan">
-                    <h4 style="margin-top: 1rem;">Abiyan Abdul</h4>
-                    <p style="color: var(--neon-purple); font-size: 0.7rem;">CPO // PRODUCT</p>
+            </div>
+            <div class="hero-image">
+                <div class="glass-card">
+                    <img src="images/IT.png" alt="IT Infrastructure" />
                 </div>
             </div>
         </section>
 
-        <section id="contact" style="padding: 100px 0; text-align: center;">
-            <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 4rem; border-radius: 4px;">
-                <h2 style="margin-bottom: 2rem; letter-spacing: 5px;">HUBUNGI SINYAL KAMI</h2>
-                <p style="margin-bottom: 2rem; color: var(--text-silver);">Mulai transformasi digital Anda hari ini.</p>
-                <a href="mailto:contact@techit.id" class="btn btn-neon">Kirim Transmisi</a>
+        <section class="stats">
+            <div class="stat-card"><h2>500+</h2><p>Proyek Sukses</p></div>
+            <div class="stat-card highlight"><h2>98%</h2><p>Kepuasan Klien</p></div>
+            <div class="stat-card"><h2>24/7</h2><p>Support</p></div>
+            <div class="stat-card"><h2>10+</h2><p>Tahun Pengalaman</p></div>
+        </section>
+
+        <section class="solutions" id="solutions">
+            <div class="section-header">
+                <h2>Misi & Solusi</h2>
+                <p>Memberikan nilai nyata melalui inovasi teknologi mutakhir.</p>
             </div>
+            <div class="solution-grid">
+                <div class="sol-card">
+                    <i data-lucide="cpu"></i>
+                    <h3>Teknologi Terkini</h3>
+                    <p>Integrasi AI dan Cloud Computing untuk efisiensi maksimal bisnis Anda.</p>
+                </div>
+                <div class="sol-card">
+                    <i data-lucide="shield-check"></i>
+                    <h3>Cyber Security</h3>
+                    <p>Proteksi data berlapis untuk menjaga aset digital paling berharga Anda.</p>
+                </div>
+                <div class="sol-card">
+                    <i data-lucide="rocket"></i>
+                    <h3>Skalabilitas Tinggi</h3>
+                    <p>Sistem yang tumbuh bersama bisnis Anda tanpa hambatan teknis.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="team" id="team">
+            <div class="section-header">
+                <h2>Struktur Eksekutif</h2>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="member-img">
+                        <img src="images/cinta.jpeg" alt="Cinta Melati">
+                    </div>
+                    <h4>Cinta Melati</h4>
+                    <span>CEO – Strategy & Investor</span>
+                </div>
+                </div>
         </section>
     </main>
 
     <footer>
-        <p>© 2026 TechIT // Digital Harmony // All Rights Reserved</p>
+        <p>© 2026 Technology & IT. Made with Passion for Innovation.</p>
     </footer>
 
-    <script>
-        lucide.createIcons();
-        
-        // Hover effect for neon cards
-        document.querySelectorAll('.neon-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
