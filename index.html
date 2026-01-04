@@ -1,317 +1,666 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Technology & IT | Cyber-Sunset Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --bg-dark: #0a0118;
-            --card-bg: #160a2c;
-            --primary-purple: #8b5cf6;
-            --accent-orange: #f97316;
-            --text-silver: #cbd5e1;
-            --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      :root {
+        --bg-dark: #0a0118;
+        --card-bg: #160a2c;
+        --primary-purple: #8b5cf6;
+        --accent-orange: #f97316;
+        --text-silver: #cbd5e1;
+        --white: #ffffff;
+        --glass: rgba(255, 255, 255, 0.03);
+        --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--white);
+        line-height: 1.6;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+
+      /* DECORATION */
+      .glow-orb {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(139, 92, 246, 0.15) 0%,
+          transparent 70%
+        );
+        z-index: -1;
+        filter: blur(60px);
+      }
+
+      /* NAVBAR */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 25px 8%;
+        background: rgba(10, 1, 24, 0.8);
+        backdrop-filter: blur(15px);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+      }
+      .logo {
+        font-weight: 800;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+      }
+      .logo span {
+        color: var(--accent-orange);
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--text-silver);
+        margin: 0 15px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+      nav a:hover {
+        color: var(--primary-purple);
+      }
+
+      /* BUTTONS */
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent-orange), #ea580c);
+        color: white;
+        padding: 12px 28px;
+        border-radius: 12px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
+      }
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(249, 115, 22, 0.4);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        padding: 12px 28px;
+        border-radius: 12px;
+        border: 2px solid var(--primary-purple);
+        font-weight: 700;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: var(--transition);
+      }
+      .btn-secondary:hover {
+        background: var(--primary-purple);
+      }
+
+      /* HERO */
+      .hero {
+        padding: 180px 8% 100px;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+      }
+      .hero-text {
+        flex: 1;
+      }
+      .badge {
+        background: rgba(139, 92, 246, 0.15);
+        color: var(--primary-purple);
+        padding: 8px 18px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        display: inline-block;
+        margin-bottom: 25px;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+      }
+      .hero h1 {
+        font-size: 4rem;
+        line-height: 1.1;
+        margin-bottom: 25px;
+        font-weight: 800;
+      }
+      .hero h1 span {
+        color: var(--accent-orange);
+      }
+      .hero p {
+        font-size: 1.1rem;
+        color: var(--text-silver);
+        margin-bottom: 35px;
+        max-width: 550px;
+      }
+
+      .hero-image {
+        flex: 1;
+        position: relative;
+      }
+      .hero-image img {
+        width: 100%;
+        filter: drop-shadow(0 0 50px rgba(139, 92, 246, 0.3));
+      }
+
+      /* STATS */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        padding: 60px 8%;
+        background: var(--card-bg);
+        border-radius: 30px;
+        margin: 0 8% 100px;
+        border: 1px solid rgba(139, 92, 246, 0.1);
+      }
+      .stat-item {
+        text-align: center;
+      }
+      .stat-item h2 {
+        font-size: 3rem;
+        color: var(--accent-orange);
+        margin-bottom: 5px;
+      }
+      .stat-item p {
+        color: var(--text-silver);
+        font-weight: 500;
+      }
+
+      /* ABOUT */
+      .about {
+        padding: 80px 8%;
+      }
+      .about-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        background: var(--glass);
+        padding: 60px;
+        border-radius: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .about h2 {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+      }
+      .about-text h3 {
+        color: var(--primary-purple);
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+      }
+      .about-text p {
+        color: var(--text-silver);
+        margin-bottom: 15px;
+      }
+
+      /* SERVICES */
+      .services {
+        padding: 100px 8%;
+        text-align: center;
+      }
+
+      .services h2 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .services-subtitle {
+        color: var(--text-silver);
+        max-width: 600px;
+        margin: 0 auto 60px;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 30px;
+      }
+
+      .service-card {
+        background: var(--card-bg);
+        padding: 35px;
+        border-radius: 25px;
+        text-align: left;
+        border: 1px solid rgba(139, 92, 246, 0.15);
+        transition: var(--transition);
+      }
+
+      .service-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent-orange);
+      }
+
+      .service-card h3 {
+        color: var(--accent-orange);
+        margin-bottom: 12px;
+      }
+
+      .service-card p {
+        color: var(--text-silver);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+      }
+
+      .service-card .price {
+        font-weight: 700;
+        color: var(--primary-purple);
+      }
+
+      /* SOLUTIONS */
+      .solutions {
+        padding: 100px 8%;
+        text-align: center;
+      }
+      .sol-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+      }
+      .card {
+        background: var(--card-bg);
+        padding: 45px;
+        border-radius: 25px;
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        transition: var(--transition);
+        text-align: left;
+      }
+      .card:hover {
+        transform: scale(1.03);
+        border-color: var(--accent-orange);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+      .card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--white);
+      }
+      .card p {
+        color: var(--text-silver);
+      }
+
+      /* TEAM */
+      .team {
+        padding: 100px 8%;
+        text-align: center;
+      }
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+      }
+      .team-photo {
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 20px;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 2px solid var(--primary-purple);
+        padding: 5px;
+      }
+      .team-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+      .team-card strong {
+        font-size: 1.2rem;
+        display: block;
+        margin-bottom: 5px;
+        color: var(--accent-orange);
+      }
+
+      /* CONTACT */
+      .contact {
+        padding: 100px 8%;
+      }
+      .contact-box {
+        max-width: 800px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 60px;
+        border-radius: 40px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+      }
+      .contact-form {
+        display: grid;
+        gap: 20px;
+        margin-top: 30px;
+      }
+      .contact-form input,
+      .contact-form textarea {
+        background: #1f113a;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        padding: 18px;
+        border-radius: 12px;
+        color: white;
+        font-family: inherit;
+      }
+      .contact-form input:focus {
+        outline: none;
+        border-color: var(--accent-orange);
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 60px 8%;
+        text-align: center;
+        border-top: 1px solid rgba(139, 92, 246, 0.1);
+      }
+      .footer-links {
+        margin-top: 20px;
+      }
+      .footer-links a {
+        color: var(--text-silver);
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 968px) {
+        .hero {
+          flex-direction: column;
+          text-align: center;
+          padding-top: 120px;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--white);
-            line-height: 1.6;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+        .hero h1 {
+          font-size: 2.8rem;
         }
-
-        /* DECORATION */
-        .glow-orb {
-            position: absolute; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
-            z-index: -1; filter: blur(60px);
-        }
-
-        /* NAVBAR */
-        .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 8%; background: rgba(10, 1, 24, 0.8);
-            backdrop-filter: blur(15px); position: fixed; width: 100%; top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-        }
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
-        .logo span { color: var(--accent-orange); }
-
-        nav a {
-            text-decoration: none; color: var(--text-silver); margin: 0 15px;
-            font-weight: 600; font-size: 0.9rem; transition: var(--transition);
-        }
-        nav a:hover { color: var(--primary-purple); }
-
-        /* BUTTONS */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-orange), #ea580c);
-            color: white; padding: 12px 28px; border-radius: 12px;
-            border: none; font-weight: 700; cursor: pointer; transition: var(--transition);
-            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
-        }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(249, 115, 22, 0.4); }
-
-        .btn-secondary {
-            background: transparent; color: white; padding: 12px 28px;
-            border-radius: 12px; border: 2px solid var(--primary-purple);
-            font-weight: 700; cursor: pointer; margin-left: 10px; transition: var(--transition);
-        }
-        .btn-secondary:hover { background: var(--primary-purple); }
-
-        /* HERO */
-        .hero { padding: 180px 8% 100px; display: flex; align-items: center; gap: 50px; }
-        .hero-text { flex: 1; }
-        .badge {
-            background: rgba(139, 92, 246, 0.15); color: var(--primary-purple);
-            padding: 8px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: 800;
-            display: inline-block; margin-bottom: 25px; border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 25px; font-weight: 800; }
-        .hero h1 span { color: var(--accent-orange); }
-        .hero p { font-size: 1.1rem; color: var(--text-silver); margin-bottom: 35px; max-width: 550px; }
-
-        .hero-image { flex: 1; position: relative; }
-        .hero-image img { width: 100%; filter: drop-shadow(0 0 50px rgba(139, 92, 246, 0.3)); }
-
-        /* STATS */
-        .stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px; padding: 60px 8%; background: var(--card-bg);
-            border-radius: 30px; margin: 0 8% 100px; border: 1px solid rgba(139, 92, 246, 0.1);
-        }
-        .stat-item { text-align: center; }
-        .stat-item h2 { font-size: 3rem; color: var(--accent-orange); margin-bottom: 5px; }
-        .stat-item p { color: var(--text-silver); font-weight: 500; }
-
-        /* ABOUT */
-        .about { padding: 80px 8%; }
         .about-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-            background: var(--glass); padding: 60px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05);
+          grid-template-columns: 1fr;
         }
-        .about h2 { font-size: 2.5rem; margin-bottom: 40px; }
-        .about-text h3 { color: var(--primary-purple); margin-bottom: 20px; font-size: 1.8rem; }
-        .about-text p { color: var(--text-silver); margin-bottom: 15px; }
-
-
-        /* SOLUTIONS */
-        .solutions { padding: 100px 8%; text-align: center; }
-        .sol-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 60px; }
-        .card {
-            background: var(--card-bg); padding: 45px; border-radius: 25px;
-            border: 1px solid rgba(139, 92, 246, 0.1); transition: var(--transition); text-align: left;
+        .navbar nav {
+          display: none;
         }
-        .card:hover { 
-            transform: scale(1.03); border-color: var(--accent-orange);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        .card h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--white); }
-        .card p { color: var(--text-silver); }
-
-        /* TEAM */
-        .team { padding: 100px 8%; text-align: center; }
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-top: 60px; }
-        .team-photo {
-            width: 160px; height: 160px; margin: 0 auto 20px; border-radius: 20px;
-            overflow: hidden; border: 2px solid var(--primary-purple); padding: 5px;
-        }
-        .team-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
-        .team-card strong { font-size: 1.2rem; display: block; margin-bottom: 5px; color: var(--accent-orange); }
-
-        /* CONTACT */
-        .contact { padding: 100px 8%; }
-        .contact-box {
-            max-width: 800px; margin: 0 auto; background: var(--card-bg);
-            padding: 60px; border-radius: 40px; border: 1px solid rgba(139, 92, 246, 0.2);
-        }
-        .contact-form { display: grid; gap: 20px; margin-top: 30px; }
-        .contact-form input, .contact-form textarea {
-            background: #1f113a; border: 1px solid rgba(139, 92, 246, 0.2);
-            padding: 18px; border-radius: 12px; color: white; font-family: inherit;
-        }
-        .contact-form input:focus { outline: none; border-color: var(--accent-orange); }
-
-        /* FOOTER */
-        footer { padding: 60px 8%; text-align: center; border-top: 1px solid rgba(139, 92, 246, 0.1); }
-        .footer-links { margin-top: 20px; }
-        .footer-links a { color: var(--text-silver); text-decoration: none; margin: 0 15px; font-size: 0.9rem; }
-
-        @media (max-width: 968px) {
-            .hero { flex-direction: column; text-align: center; padding-top: 120px; }
-            .hero h1 { font-size: 2.8rem; }
-            .about-container { grid-template-columns: 1fr; }
-            .navbar nav { display: none; }
-        }
+      }
     </style>
-</head>
-<body>
-
-    <div class="glow-orb" style="top: 10%; right: 10%;"></div>
-    <div class="glow-orb" style="bottom: 10%; left: 10%; background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);"></div>
+  </head>
+  <body>
+    <div class="glow-orb" style="top: 10%; right: 10%"></div>
+    <div
+      class="glow-orb"
+      style="
+        bottom: 10%;
+        left: 10%;
+        background: radial-gradient(
+          circle,
+          rgba(249, 115, 22, 0.1) 0%,
+          transparent 70%
+        );
+      "
+    ></div>
 
     <header class="navbar">
-        <div class="logo">Technology<span>&IT</span></div>
-        <nav>
-            <a href="#home">Beranda</a>
-            <a href="#about">Tentang</a>
-            <a href="#solutions">Solusi</a>
-            <a href="#contact">Kontak</a>
-        </nav>
-        <button class="btn-primary" onclick="location.href='#contact'">Mulai</button>
+      <div class="logo">Technology<span>&IT</span></div>
+      <nav>
+        <a href="#home">Beranda</a>
+        <a href="#about">Tentang</a>
+        <a href="#services">Layanan</a>
+        <a href="#solutions">Solusi</a>
+        <a href="#team">Tim</a>
+        <a href="#contact">Kontak</a>
+      </nav>
+      <button class="btn-primary" onclick="location.href='#contact'">
+        Mulai
+      </button>
     </header>
 
     <section class="hero" id="home">
-        <div class="hero-text">
-            <span class="badge">Technology Excellence 2026</span>
-            <h1>Merintis <span>Masa Depan</span> Digital</h1>
-            <p>Membangun infrastruktur cerdas yang aman dan skalabel untuk mendukung ekosistem bisnis generasi terbaru.</p>
-            <div class="hero-btn">
-                <button class="btn-primary">Layanan Kami</button>
-                <button class="btn-secondary">Hubungi Kami</button>
-            </div>
+      <div class="hero-text">
+        <span class="badge">Technology Excellence 2026</span>
+        <h1>Merintis <span>Masa Depan</span> Digital</h1>
+        <p>
+          Membangun infrastruktur cerdas yang aman dan skalabel untuk mendukung
+          ekosistem bisnis generasi terbaru.
+        </p>
+        <div class="hero-btn">
+          <button class="btn-primary" onclick="location.href='#services'">
+            Layanan Kami
+          </button>
+          <button class="btn-secondary" onclick="location.href='#contact'">
+            Hubungi Kami
+          </button>
         </div>
-        <div class="hero-image">
-            <img src="images/IT.png" alt="Futuristic Tech" onerror="this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'">
-        </div>
+      </div>
+      <div class="hero-image">
+        <img
+          src="images/IT.png"
+          alt="Futuristic Tech"
+          onerror="this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'"
+        />
+      </div>
     </section>
 
     <section class="stats">
-        <div class="stat-item"><h2>500+</h2><p>Proyek Selesai</p></div>
-        <div class="stat-item"><h2>98%</h2><p>Kepuasan Klien</p></div>
-        <div class="stat-item"><h2>24/7</h2><p>Dukungan Aktif</p></div>
-        <div class="stat-item"><h2>10+</h2><p>Tahun Pengalaman</p></div>
+      <div class="stat-item">
+        <h2>500+</h2>
+        <p>Proyek Selesai</p>
+      </div>
+      <div class="stat-item">
+        <h2>98%</h2>
+        <p>Kepuasan Klien</p>
+      </div>
+      <div class="stat-item">
+        <h2>24/7</h2>
+        <p>Dukungan Aktif</p>
+      </div>
+      <div class="stat-item">
+        <h2>10+</h2>
+        <p>Tahun Pengalaman</p>
+      </div>
     </section>
 
     <section class="about" id="about">
-        <div class="about-container">
-            <div class="about-text">
-                <h2>Tentang Kami</h2>
-                <h3>Visi Kami</h3>
-                <p>1. Menjadi pelopor solusi teknologi yang menghubungkan dunia melalui inovasi digital untuk efisiensi masyarakat.</p>
-                <p>2. Menghadirkan solusi terpercaya untuk integrasi bisnis, data, dan teknologi secara efektif.</p>
-                <p>3. Membangun ekosistem teknologi inovatif untuk solusi digital modern yang berkelanjutan.</p>
-                <a href="#" style="color: var(--accent-orange); text-decoration: none; font-weight: 800;">Pelajari Detail →</a>
-            </div>
-            <div class="about-visual">
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600" style="width:100%; border-radius:30px;">
-            </div>
+      <div class="about-container">
+        <div class="about-text">
+          <h2>Tentang Kami</h2>
+          <h3>Visi Kami</h3>
+          <p>
+            1. Menjadi pelopor solusi teknologi yang menghubungkan dunia melalui
+            inovasi digital untuk efisiensi masyarakat.
+          </p>
+          <p>
+            2. Menghadirkan solusi terpercaya untuk integrasi bisnis, data, dan
+            teknologi secara efektif.
+          </p>
+          <p>
+            3. Membangun ekosistem teknologi inovatif untuk solusi digital
+            modern yang berkelanjutan.
+          </p>
+          <a
+            href="#"
+            style="
+              color: var(--accent-orange);
+              text-decoration: none;
+              font-weight: 800;
+            "
+            >Pelajari Detail →</a
+          >
         </div>
+        <div class="about-visual">
+          <img
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600"
+            style="width: 100%; border-radius: 30px"
+          />
+        </div>
+      </div>
     </section>
-    
-<!-- SERVICES -->
-<section class="services" id="services">
-  <h2>Layanan Kami</h2>
-  <p class="services-subtitle">
-    Kami menyediakan berbagai solusi teknologi untuk mendukung kebutuhan digital Anda.
-  </p>
 
-  <div class="services-grid">
-    <div class="service-card">
-      <h3>Konsultasi IT</h3>
-      <p>Analisis kebutuhan teknologi dan rekomendasi solusi yang tepat.</p>
-      <span class="price">Mulai dari Rp 2.000.000</span>
-    </div>
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <h2>Layanan Kami</h2>
+      <p class="services-subtitle">
+        Kami menyediakan berbagai solusi teknologi untuk mendukung kebutuhan
+        digital Anda.
+      </p>
 
-    <div class="service-card">
-      <h3>Pengembangan Web</h3>
-      <p>Pembuatan sistem dan website profesional berbasis kebutuhan bisnis.</p>
-      <span class="price">Mulai dari Rp 5.000.000</span>
-    </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Konsultasi IT</h3>
+          <p>Analisis kebutuhan teknologi dan rekomendasi solusi yang tepat.</p>
+          <span class="price">Mulai dari Rp 2.000.000</span>
+        </div>
 
-    <div class="service-card">
-      <h3>Transformasi Digital</h3>
-      <p>Digitalisasi proses bisnis agar lebih efisien dan kompetitif.</p>
-      <span class="price">Mulai dari Rp 8.000.000</span>
-    </div>
+        <div class="service-card">
+          <h3>Pengembangan Web</h3>
+          <p>
+            Pembuatan sistem dan website profesional berbasis kebutuhan bisnis.
+          </p>
+          <span class="price">Mulai dari Rp 5.000.000</span>
+        </div>
 
-    <div class="service-card">
-      <h3>UI / UX Design</h3>
-      <p>Desain antarmuka modern dan ramah pengguna.</p>
-      <span class="price">Mulai dari Rp 3.000.000</span>
-    </div>
-  </div>
-</section>
+        <div class="service-card">
+          <h3>Transformasi Digital</h3>
+          <p>Digitalisasi proses bisnis agar lebih efisien dan kompetitif.</p>
+          <span class="price">Mulai dari Rp 8.000.000</span>
+        </div>
+
+        <div class="service-card">
+          <h3>UI / UX Design</h3>
+          <p>Desain antarmuka modern dan ramah pengguna.</p>
+          <span class="price">Mulai dari Rp 3.000.000</span>
+        </div>
+      </div>
+    </section>
 
     <section class="solutions" id="solutions">
-        <h2>Misi Strategis</h2>
-        <p style="color: var(--text-silver); margin-top: 10px;">Memberikan solusi terbaik melalui inovasi berbasis teknologi.</p>
-        <div class="sol-grid">
-            <div class="card">
-                <h3>Teknologi Terkini</h3>
-                <p>Mengembangkan solusi TI dengan teknologi terbaru untuk menjaga bisnis Anda tetap unggul dan kompetitif.</p>
-            </div>
-            <div class="card">
-                <h3>Transformasi Digital</h3>
-                <p>Membantu perusahaan bertransformasi secara digital melalui strategi yang efektif dan berkelanjutan.</p>
-            </div>
-            <div class="card">
-                <h3>Aman & Terpercaya</h3>
-                <p>Membangun sistem yang aman, efisien, dan mudah digunakan oleh semua kalangan industri.</p>
-            </div>
+      <h2>Misi Strategis</h2>
+      <p style="color: var(--text-silver); margin-top: 10px">
+        Memberikan solusi terbaik melalui inovasi berbasis teknologi.
+      </p>
+      <div class="sol-grid">
+        <div class="card">
+          <h3>Teknologi Terkini</h3>
+          <p>
+            Mengembangkan solusi TI dengan teknologi terbaru untuk menjaga
+            bisnis Anda tetap unggul dan kompetitif.
+          </p>
         </div>
+        <div class="card">
+          <h3>Transformasi Digital</h3>
+          <p>
+            Membantu perusahaan bertransformasi secara digital melalui strategi
+            yang efektif dan berkelanjutan.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Aman & Terpercaya</h3>
+          <p>
+            Membangun sistem yang aman, efisien, dan mudah digunakan oleh semua
+            kalangan industri.
+          </p>
+        </div>
+      </div>
     </section>
 
     <section class="team" id="team">
-        <h2>Struktur Tim</h2>
-        <div class="team-grid">
-            <div class="team-card">
-                <div class="team-photo"><img src="images/Cinta.jpeg" alt="Cinta" onerror="this.src='https://i.pravatar.cc/150?u=a'"></div>
-                <strong>Cinta Melati</strong>
-                <p>CEO – Strategi & Investor</p>
-            </div>
-            <div class="team-card">
-                <div class="team-photo"><img src="images/Alifa.jpeg" alt="Alifa" onerror="this.src='https://i.pravatar.cc/150?u=b'"></div>
-                <strong>Alifa Fazilatun Nisa</strong>
-                <p>CTO – R&D & AI/IoT</p>
-            </div>
-            <div class="team-card">
-                <div class="team-photo"><img src="images/Yuda.jpeg" alt="Yuda" onerror="this.src='https://i.pravatar.cc/150?u=c'"></div>
-                <strong>Yuda Albifarah</strong>
-                <p>COO – Operasional</p>
-            </div>
-            <div class="team-card">
-                <div class="team-photo"><img src="images/FotoAbiyan.jpg" alt="Abiyan" onerror="this.src='https://i.pravatar.cc/150?u=d'"></div>
-                <strong>Abiyan Abdulrohman</strong>
-                <p>CPO – Produk & UX</p>
-            </div>
-            <div class="team-card">
-                <div class="team-photo"><img src="images/Danang.jpeg" alt="Viqrin" onerror="this.src='https://i.pravatar.cc/150?u=e'"></div>
-                <strong>Viqrin</strong>
-                <p>CFO – Keuangan</p>
-            </div>
+      <h2>Struktur Tim</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-photo">
+            <img
+              src="images/Cinta.jpeg"
+              alt="Cinta"
+              onerror="this.src='https://i.pravatar.cc/150?u=a'"
+            />
+          </div>
+          <strong>Cinta Melati</strong>
+          <p>CEO – Strategi & Investor</p>
         </div>
+        <div class="team-card">
+          <div class="team-photo">
+            <img
+              src="images/Alifa.jpeg"
+              alt="Alifa"
+              onerror="this.src='https://i.pravatar.cc/150?u=b'"
+            />
+          </div>
+          <strong>Alifa Fazilatun Nisa</strong>
+          <p>CTO – R&D & AI/IoT</p>
+        </div>
+        <div class="team-card">
+          <div class="team-photo">
+            <img
+              src="images/Yuda.jpeg"
+              alt="Yuda"
+              onerror="this.src='https://i.pravatar.cc/150?u=c'"
+            />
+          </div>
+          <strong>Yuda Albifarah</strong>
+          <p>COO – Operasional</p>
+        </div>
+        <div class="team-card">
+          <div class="team-photo">
+            <img
+              src="images/FotoAbiyan.jpg"
+              alt="Abiyan"
+              onerror="this.src='https://i.pravatar.cc/150?u=d'"
+            />
+          </div>
+          <strong>Abiyan Abdulrohman</strong>
+          <p>CPO – Produk & UX</p>
+        </div>
+        <div class="team-card">
+          <div class="team-photo">
+            <img
+              src="images/Danang.jpeg"
+              alt="Viqrin"
+              onerror="this.src='https://i.pravatar.cc/150?u=e'"
+            />
+          </div>
+          <strong>Viqrin</strong>
+          <p>CFO – Keuangan</p>
+        </div>
+      </div>
     </section>
 
     <section class="contact" id="contact">
-        <div class="contact-box">
-            <h2 style="text-align: center;">Hubungi Kami</h2>
-            <p style="text-align: center; color: var(--text-silver);">Mari wujudkan ide hebat bersama tim kami.</p>
-            <form class="contact-form">
-                <input type="text" placeholder="Nama Lengkap" required>
-                <input type="email" placeholder="Email Bisnis" required>
-                <textarea rows="5" placeholder="Pesan Anda"></textarea>
-                <button type="submit" class="btn-primary">Kirim Pesan Sekarang</button>
-            </form>
-        </div>
+      <div class="contact-box">
+        <h2 style="text-align: center">Hubungi Kami</h2>
+        <p style="text-align: center; color: var(--text-silver)">
+          Mari wujudkan ide hebat bersama tim kami.
+        </p>
+        <form class="contact-form">
+          <input type="text" placeholder="Nama Lengkap" required />
+          <input type="email" placeholder="Email Bisnis" required />
+          <textarea rows="5" placeholder="Pesan Anda"></textarea>
+          <button type="submit" class="btn-primary">
+            Kirim Pesan Sekarang
+          </button>
+        </form>
+      </div>
     </section>
 
     <footer>
-        <p>© 2026 Technology & IT. Hak Cipta Dilindungi.</p>
-        <div class="footer-links">
-            <a href="#">Kebijakan Privasi</a>
-            <a href="#">Syarat & Ketentuan</a>
-            <a href="#">Instagram</a>
-        </div>
+      <p>© 2026 Technology & IT. Hak Cipta Dilindungi.</p>
+      <div class="footer-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="#">Instagram</a>
+      </div>
     </footer>
-
-</body>
+  </body>
 </html>
