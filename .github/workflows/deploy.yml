@@ -17,18 +17,21 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
-          # 1. Setup SSH Key
+          # 1. Setup SSH Key dengan pembersihan format
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          # Menghapus spasi liar dan memastikan ada newline di akhir key
+          echo "$SSH_PRIVATE_KEY" | sed 's/\r$//' > ~/.ssh/id_rsa
           echo "" >> ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          
+          # Tambahkan host ke known_hosts agar tidak ditanya yes/no
           ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
 
-          # 2. Kompres file (Output diletakkan di luar folder repo agar aman)
-          tar -czf ../deploy.tar.gz --exclude='.git' --exclude='node_modules' . || [ $? -eq 1 ]
+          # 2. Kompres file (Output diletakkan di luar folder agar tidak terbaca tar)
+          tar -czf ../deploy.tar.gz --exclude='.git' --exclude='node_modules' .
 
-          # 3. Kirim file ke server
-          scp -i ~/.ssh/id_rsa ../deploy.tar.gz root@$SERVER_IP:/tmp/deploy.tar.gz
+          # 3. Kirim file dengan opsi Verbose (-v) untuk debug jika gagal lagi
+          scp -v -i ~/.ssh/id_rsa ../deploy.tar.gz root@$SERVER_IP:/tmp/deploy.tar.gz
 
           # 4. Ekstrak di server & Restart Docker
           ssh -i ~/.ssh/id_rsa root@$SERVER_IP << 'EOF'
@@ -38,9 +41,11 @@ jobs:
             rm /tmp/deploy.tar.gz
             cd /var/www/my-website
             
+            # Cek perintah docker mana yang tersedia
             if docker compose version > /dev/null 2>&1; then
               docker compose up -d --build --remove-orphans
             else
               docker-compose up -d --build --remove-orphans
             fi
           EOF
+          
