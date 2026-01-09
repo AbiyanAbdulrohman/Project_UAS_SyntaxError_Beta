@@ -17,30 +17,26 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
-          # 1. Setup SSH Key
+          # 1. Setup SSH Key dengan perbaikan format otomatis
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          echo "" >> ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          
+          # Tambahkan host ke known_hosts agar tidak ditanya yes/no
           ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
 
-          # 2. Kompres file (Tambahkan flag --warning=no-file-changed agar tidak error)
-          tar --warning=no-file-changed -czf deploy.tar.gz --exclude='.git' --exclude='node_modules' --exclude='deploy.tar.gz' . || true
+          # 2. Kompres file
+          tar -czf deploy.tar.gz --exclude='.git' --exclude='node_modules' .
 
-          # 3. Kirim file ke server
-          scp -i ~/.ssh/id_rsa deploy.tar.gz root@$SERVER_IP:/tmp/deploy.tar.gz
+          # 3. Kirim file dengan opsi koneksi yang lebih longgar
+          scp -v -o ConnectTimeout=30 -o BatchMode=yes -i ~/.ssh/id_rsa deploy.tar.gz root@$SERVER_IP:/tmp/deploy.tar.gz
 
-          # 4. Ekstrak di server & Restart Docker
+          # 4. Ekstrak di server
           ssh -i ~/.ssh/id_rsa root@$SERVER_IP << 'EOF'
-            set -e
             mkdir -p /var/www/my-website
             tar -xzf /tmp/deploy.tar.gz -C /var/www/my-website
             rm /tmp/deploy.tar.gz
             cd /var/www/my-website
-            
-            # Jalankan docker compose
-            if command -v docker-compose >/dev/null 2>&1; then
-              docker-compose up -d --build --remove-orphans
-            else
-              docker compose up -d --build --remove-orphans
-            fi
+            docker compose up -d --build --remove-orphans
           EOF
