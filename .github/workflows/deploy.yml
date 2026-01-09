@@ -1,23 +1,19 @@
-name: Deploy Static Website
-
-on:
-  push:
-    branches:
-      - main  # Ganti jika nama branch utama kamu bukan main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Deploy to Server
+- name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-rlgozc --delete"
           REMOTE_HOST: ${{ secrets.SERVER_IP }}
           REMOTE_USER: root
-          TARGET: "/var/www/my-website" # Folder tujuan di server
-          SOURCE: "/" # Mengirim semua file dari repo
+          TARGET: "/var/www/my-website"
+          SOURCE: "/"
+
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/my-website
+            docker compose up -d --build
