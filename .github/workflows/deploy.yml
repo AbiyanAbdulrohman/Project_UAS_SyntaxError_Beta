@@ -12,34 +12,36 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Deploy files to Server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Menggunakan -avz agar lebih stabil dan informatif
-          ARGS: "-avz --delete"
-          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-          REMOTE_USER: root
-          TARGET: "/var/www/my-website"
-          SOURCE: "/"
-          # Mengecualikan folder .git dan node_modules agar deploy lebih cepat
-          EXCLUDE: "/.git/, /node_modules/"
-
-      - name: Executing Remote SSH Commands
+      - name: Pre-deployment Server Check
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Pastikan rsync terinstall di server (mencegah error code 12)
-            if ! command -v rsync > /dev/null; then
-              apt-get update && apt-get install -y rsync
-            fi
+            # Pastikan rsync terpasang agar tidak error code 12
+            apt-get update && apt-get install -y rsync
+            # Pastikan folder target tersedia
+            mkdir -p /var/www/my-website
 
-            # Masuk ke folder project
+      - name: Deploy files to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-av --delete" # Hapus 'z' jika koneksi internet server tidak stabil
+          REMOTE_HOST: ${{ secrets.SERVER_IP }}
+          REMOTE_USER: root
+          TARGET: "/var/www/my-website"
+          SOURCE: "/"
+          EXCLUDE: "/.git/, /node_modules/, /certbot/" # Jangan timpa data sertifikat yang sudah ada
+
+      - name: Finalize & Start Services
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
             cd /var/www/my-website
-
-            # Jalankan docker compose dengan file terbaru
-            # Menggunakan --remove-orphans untuk membersihkan container lama yang tidak terpakai
+            # Jalankan docker compose
             docker compose up -d --build --remove-orphans
