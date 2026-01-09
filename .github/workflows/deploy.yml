@@ -19,21 +19,20 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Pastikan rsync terpasang agar tidak error code 12
-            apt-get update && apt-get install -y rsync
-            # Pastikan folder target tersedia
             mkdir -p /var/www/my-website
+            chmod 755 /var/www/my-website
 
-      - name: Deploy files to Server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-av --delete" # Hapus 'z' jika koneksi internet server tidak stabil
-          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-          REMOTE_USER: root
-          TARGET: "/var/www/my-website"
-          SOURCE: "/"
-          EXCLUDE: "/.git/, /node_modules/, /certbot/" # Jangan timpa data sertifikat yang sudah ada
+      - name: Deploy files via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "./*"
+          target: "/var/www/my-website"
+          rm: true # Membersihkan folder target sebelum copy
+          # Kecualikan folder yang tidak perlu dikirim
+          exclude: ".git,node_modules,certbot"
 
       - name: Finalize & Start Services
         uses: appleboy/ssh-action@master
@@ -43,5 +42,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/my-website
-            # Jalankan docker compose
-            docker compose up -d --build --remove-orphans
+            # Pastikan file konfigurasi ada sebelum running
+            if [ -f "docker-compose.yml" ]; then
+                docker compose up -d --build --remove-orphans
+            else
+                echo "Error: docker-compose.yml not found!"
+                exit 1
+            fi
