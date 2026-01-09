@@ -23,19 +23,24 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
 
-          # 2. Kompres file (abaikan folder yang tidak perlu)
-          tar -czf deploy.tar.gz --exclude='.git' --exclude='node_modules' --exclude='deploy.tar.gz' .
+          # 2. Kompres file (Tambahkan flag --warning=no-file-changed agar tidak error)
+          tar --warning=no-file-changed -czf deploy.tar.gz --exclude='.git' --exclude='node_modules' --exclude='deploy.tar.gz' . || true
 
           # 3. Kirim file ke server
           scp -i ~/.ssh/id_rsa deploy.tar.gz root@$SERVER_IP:/tmp/deploy.tar.gz
 
           # 4. Ekstrak di server & Restart Docker
           ssh -i ~/.ssh/id_rsa root@$SERVER_IP << 'EOF'
+            set -e
             mkdir -p /var/www/my-website
             tar -xzf /tmp/deploy.tar.gz -C /var/www/my-website
             rm /tmp/deploy.tar.gz
             cd /var/www/my-website
-            if [ -f "docker-compose.yml" ]; then
+            
+            # Jalankan docker compose
+            if command -v docker-compose >/dev/null 2>&1; then
+              docker-compose up -d --build --remove-orphans
+            else
               docker compose up -d --build --remove-orphans
             fi
           EOF
