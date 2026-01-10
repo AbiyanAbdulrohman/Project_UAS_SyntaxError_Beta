@@ -12,30 +12,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Deploy via Native SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SERVER_IP: ${{ secrets.SERVER_IP }}
+      - name: Setup and Deploy
         run: |
-          # 1. Setup SSH Key
+          # 1. Simpan SSH Key ke file sementara
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-          echo "" >> ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
+          
+          # 2. Tambahkan host ke known_hosts agar tidak gagal saat koneksi
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-          # 2. Kompres file & Kirim langsung lewat SSH Pipe (Tanpa SCP/SFTP)
-          # Kita kompres di lokal, lalu kirim stream-nya ke server untuk diekstrak langsung
+          # 3. Kompres dan Kirim (Menggunakan metode Pipe yang lebih ringan)
+          # 'tar' mengompres file, lalu dikirim lewat 'ssh' dan langsung diekstrak di server
           tar -czf - --exclude='.git' --exclude='node_modules' . | \
-          ssh -i ~/.ssh/id_rsa root@$SERVER_IP "mkdir -p /var/www/my-website && tar -xzf - -C /var/www/my-website"
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.SERVER_IP }} "mkdir -p /var/www/my-website && tar -xzf - -C /var/www/my-website"
 
-          # 3. Restart Docker di Server
-          ssh -i ~/.ssh/id_rsa root@$SERVER_IP << 'EOF'
-            set -e
-            cd /var/www/my-website
-            if docker compose version > /dev/null 2>&1; then
-              docker compose up -d --build --remove-orphans
-            else
-              docker-compose up -d --build --remove-orphans
-            fi
-          EOF
+          # 4. Perintah Docker di Server
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.SERVER_IP }} "cd /var/www/my-website && (docker compose up -d --build --remove-orphans || docker-compose up -d --build --remove-orphans)"
