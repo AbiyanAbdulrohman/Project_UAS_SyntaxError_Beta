@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: my-website-web
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/usr/share/nginx/html:ro  # ro = read-only agar lebih aman
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    networks:
+      - monitoring
+    # Memastikan nginx tidak crash jika certbot belum selesai buat sertifikat saat startup pertama
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx-exporter
+    depends_on:
+      - web
+    command:
+      - -nginx.scrape-uri=http://web:80/stub_status
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus # Data prometheus tetap ada meski container direstart
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    # Perbaikan: entrypoint agar tidak mencoba renew jika folder kosong (setup awal)
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  prometheus_data: # Definisi volume untuk database Prometheus

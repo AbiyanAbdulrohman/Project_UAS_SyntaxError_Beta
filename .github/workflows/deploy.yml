@@ -3,7 +3,7 @@ name: Deploy Static Website
 on:
   push:
     branches:
-      - main  # Ganti jika nama branch utama kamu bukan main
+      - main
 
 jobs:
   deploy:
@@ -12,12 +12,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgozc --delete"
-          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-          REMOTE_USER: root
-          TARGET: "/var/www/my-website" # Folder tujuan di server
-          SOURCE: "/" # Mengirim semua file dari repo
+      - name: Setup and Deploy
+        run: |
+          # 1. Simpan SSH Key ke file sementara
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          # 2. Tambahkan host ke known_hosts agar tidak gagal saat koneksi
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+          # 3. Kompres dan Kirim (Menggunakan metode Pipe yang lebih ringan)
+          # 'tar' mengompres file, lalu dikirim lewat 'ssh' dan langsung diekstrak di server
+          tar -czf - --exclude='.git' --exclude='node_modules' . | \
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.SERVER_IP }} "mkdir -p /var/www/my-website && tar -xzf - -C /var/www/my-website"
+
+          # 4. Perintah Docker di Server
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.SERVER_IP }} "cd /var/www/my-website && (docker compose up -d --build --remove-orphans || docker-compose up -d --build --remove-orphans)"
