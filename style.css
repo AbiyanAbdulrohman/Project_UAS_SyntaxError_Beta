@@ -25,21 +25,21 @@ body {
 }
 
 .logo {
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
+  display: inline-flex;       
+  align-items: center;        
   gap: 10px;
 }
 
+.logo-text {
+  line-height: 1;             
+}
+
 .logo-img {
-  width: 32px;      /* ukuran logo */
+  width: 32px;
   height: 32px;
-  object-fit: contain;
-  border-radius: 50%;
+  border-radius: 50%;         
+  object-fit: cover;
+  display: block;             
 }
 
 
