@@ -29,6 +29,20 @@ body {
   font-weight: 800;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 32px;      /* ukuran logo */
+  height: 32px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+
 /* BUTTONS */
 .btn-primary {
   background: #3b82f6;
