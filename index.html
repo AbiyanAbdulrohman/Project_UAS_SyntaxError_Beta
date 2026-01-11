@@ -41,6 +41,12 @@
         gap: 12px;
       }
 
+      .logo-img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
+
       .logo-text {
         font-weight: 800;
         font-size: 1.4rem;
@@ -49,15 +55,6 @@
 
       .logo-text .accent {
         color: var(--accent-orange);
-      }
-
-      .logo-container svg {
-        filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));
-      }
-      .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
       }
 
       /* DECORATION */
@@ -430,25 +427,8 @@
     ></div>
 
     <header class="navbar">
-      <!-- Desain Logo -->
       <div class="logo-container">
-        <svg
-          width="46"
-          height="46"
-          viewBox="0 0 100 100"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <!-- Hexagon -->
-          <polygon
-            points="50 5, 90 28, 90 72, 50 95, 10 72, 10 28"
-            fill="#1e1140"
-            stroke="#8b5cf6"
-            stroke-width="4"
-          />
-          <!-- Letter T -->
-          <rect x="28" y="30" width="44" height="8" fill="#f97316" />
-          <rect x="46" y="30" width="8" height="40" fill="#f97316" />
-        </svg>
+        <img src="images/logo.png" alt="Logo Perusahaan" class="logo-img" />
 
         <span class="logo-text">
           Technology<span class="accent">&IT</span>
@@ -463,6 +443,7 @@
         <a href="#team">Tim</a>
         <a href="#contact">Kontak</a>
       </nav>
+
       <button class="btn-primary" onclick="location.href='#contact'">
         Mulai
       </button>
