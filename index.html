@@ -34,6 +34,26 @@
         overflow-x: hidden;
         scroll-behavior: smooth;
       }
+      /* Logo CSS */
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-text {
+        font-weight: 800;
+        font-size: 1.4rem;
+        letter-spacing: -0.5px;
+      }
+
+      .logo-text .accent {
+        color: var(--accent-orange);
+      }
+
+      .logo-container svg {
+        filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));
+      }
 
       /* DECORATION */
       .glow-orb {
@@ -414,7 +434,31 @@
     ></div>
 
     <header class="navbar">
-      <div class="logo">Technology<span>&IT</span></div>
+      <!-- Desain Logo -->
+      <div class="logo-container">
+        <svg
+          width="46"
+          height="46"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Hexagon -->
+          <polygon
+            points="50 5, 90 28, 90 72, 50 95, 10 72, 10 28"
+            fill="#160a2c"
+            stroke="#8b5cf6"
+            stroke-width="4"
+          />
+          <!-- Letter T -->
+          <rect x="28" y="30" width="44" height="8" fill="#f97316" />
+          <rect x="46" y="30" width="8" height="40" fill="#f97316" />
+        </svg>
+
+        <span class="logo-text">
+          Technology<span class="accent">&IT</span>
+        </span>
+      </div>
+
       <nav>
         <a href="#home">Beranda</a>
         <a href="#about">Tentang</a>
