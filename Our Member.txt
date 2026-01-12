@@ -1,6 +1,10 @@
 Our Members
 Viqrin Perdana Sakti
 Abiyan Abdulrohhman
+<<<<<<< HEAD
+Cinta Melati
+=======
 Cinta_Melati
 Yuda Albifarah
 Alifa fazilatun Nisa
+>>>>>>> daa67760809cde77c264d0a3ec017efc0ebba52b
